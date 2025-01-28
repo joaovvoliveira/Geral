@@ -9,6 +9,23 @@ curl --write-out %{http_code} --silent --output /dev/null https://adopet-fronten
 --silent !tras apenas o codigo HTTP da requisicao
 --output !tras os dados da requisicao e tempo de espera
 
+exemplo de funcao em bash
+[
+function verifica_conflito(){
+        local arquivo="$1" #cria uma variavel local
+        if grep -q -E '<<<<<<< | ======= | >>>>>>>' "$arquivo"; then #-q nao mostra a linha de erro / -E tras o nome do arquivo
+                        echo "O arquivo $arquivo contem marcacoes de conflito de merge"
+        fi
+}
+
+diretorio="$1"
+
+for arquivo in "$diretorio"/*; do
+        if [ -f "$arquivo" ]; then #-f verifica se o argumento e um arquivo regular, nao diretorio, link, etc
+                verifica_conflito "$arquivo" #chamada de funcao bash
+        fi
+done
+]
 variavel="texto"
 variavel=$(comando)
 
