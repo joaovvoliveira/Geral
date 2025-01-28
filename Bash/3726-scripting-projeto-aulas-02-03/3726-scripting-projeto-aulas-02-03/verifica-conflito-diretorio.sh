@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Funcao que verifica se os arquivos contem algo que mostrar que o merge esta em conflito
 function verifica_conflito(){
 	local arquivo="$1" 
 	if grep -q -E '<<<<<<< | ======= | >>>>>>>' "$arquivo"; then
@@ -22,6 +23,7 @@ function verifica_conflito(){
 #
 #Creating same function with While
 
+# Funcao que verifica recursivamente os arquivos 
 function verifica_diretorio(){
 	local diretorio="$1"
 	local arquivo
@@ -39,6 +41,17 @@ function verifica_diretorio(){
 	done
 
 }
+
+# Explica o uso correto desse script
+if [ $# -ne 1 ]; then
+	echo "Uso: $0 <diretorio>"
+	exit 1
+fi
+
+# Diz que o diretorio nao existe e traz o dir digitado
+if [ ! -d "$1" ]; then
+	echo "Diretorio nao encontrado: $1"
+fi
 
 verifica_diretorio "$1"
 
