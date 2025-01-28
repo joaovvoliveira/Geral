@@ -95,3 +95,8 @@ A - Editar arquivo com o VI
 :w - Salvar
 :q - Sair
 :x - Salvar/Fechar
+
+
+npm run build
+
+npm start
