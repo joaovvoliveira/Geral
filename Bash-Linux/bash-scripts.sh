@@ -57,6 +57,35 @@ function verifica_diretorio(){
                 ((i++))
         done
 
+# Codigo que compacta/descompacta arquivos
+read -p "Entre com a operacao desejada: 'Compactar' ou 'Descompactar'" operacao
+case "$operacao" in
+        "Compactar")
+                read -p "Nome do Arquivo final (.tar.gz)" arquivo_saida
+                read -p "Quais arquivos deseja compactar ?(separadas por espaco)" arquivos
+                tar -czf "$arquivo_saida" $arquivos
+                echo "Compactados com sucesso em $arquivo_saida"
+        ;;
+        "Descompactar")
+                read -p "Nome do arquivo a descompactar (.tar.gz)" arquivo
+                read -p "Diretorio destino: " diretorio
+                tar -xzf "$arquivo" -C "$diretorio"
+                echo "Arquivo $arquivo descompactado em $diretorio"
+        ;;
+        *)
+        echo "Operacao invalida!"
+        echo "Selecione descompactar ou compactar"
+        exit 1
+        ;;
+esac
+
+# Verifica se algum servico esta executando
+if pgrep nginx &> /dev/null; then
+        echo "Nginx esta operando $(date +"%Y-%m-%d%H:%M:%S")"
+else
+        echo "Nginx fora de operacao $(date +"%Y-%m-%d%H:%M:%S")"
+fi
+
 # http://gnu.org/software/grep/manual/grep.html -- Documentacao oficial GREP
 # https://www.gnu.org/software/sed/manual/sed.html -- Documentacao oficial SED
 # https://www.gnu.org/software/gawk/manual/gawk.html -- Documentacao oficial AWK
