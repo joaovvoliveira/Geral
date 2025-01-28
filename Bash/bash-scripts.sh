@@ -29,6 +29,38 @@ done
 variavel="texto"
 variavel=$(comando)
 
+function verifica_diretorio(){
+    local diretorio="$1"
+    local arquivo
+    for arquivo in "$diretorio"/*; do
+            if [ -f "$arquivo" ]; then
+                    verifica_conflito "$arquivo"
+            elif [ -d "$arquivo" ]; then # -d verifica se o arquivo e uma diretorio, se sim, ja dentro do diretorio ele executa novamente a funcao no diretorio atual.
+                    verifica_diretorio "$arquivo"
+            fi
+    done
+}
+
+function verifica_diretorio(){
+        local diretorio="$1"
+        local arquivo
+        local arquivos=("$diretorio"/*)
+        local i=0
+
+        while [ $i -lt ${#arquivos[@]} ]; do    #arquivos[@] traz o tamanho total do diretorio na var "arquivos"
+                arquivo="${arquivos[$i]}"       #var arquivo recebe a posicao do vetor atual 
+                if [ -f "$arquivo" ]; then
+                        verifica_conflito "$arquivo"
+                elif [ -d "$arquivo" ]; then
+                        verifica_diretorio "$arquivo"
+                fi
+                ((i++))
+        done
+
+# http://gnu.org/software/grep/manual/grep.html -- Documentacao oficial GREP
+# https://www.gnu.org/software/sed/manual/sed.html -- Documentacao oficial SED
+# https://www.gnu.org/software/gawk/manual/gawk.html -- Documentacao oficial AWK
+
 date - Tras a data/hora atual
 date +%F - Tras a data atual
 date +%F-%H:%M - Tras a data com a hora ordenada
