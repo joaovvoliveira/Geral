@@ -9,17 +9,17 @@ function verifica_conflito(){
 }
 
 
-#function verifica_diretorio(){
-#	local diretorio="$1"
-#	local arquivo
-#	for arquivo in "$diretorio"/*; do
-#		if [ -f "$arquivo" ]; then
-#			verifica_conflito "$arquivo"
-#		elif [ -d "$arquivo" ]; then
-#			verifica_diretorio "$arquivo"	
-#		fi
-#	done
-#}
+function verifica_diretorio(){
+	local diretorio="$1"
+	local arquivo
+	for arquivo in "$diretorio"/*; do
+		if [ -f "$arquivo" ]; then
+			verifica_conflito "$arquivo"
+		elif [ -d "$arquivo" ]; then
+			verifica_diretorio "$arquivo"	
+		fi
+	done
+}
 #
 #Creating same function with While
 

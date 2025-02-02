@@ -79,6 +79,9 @@ case "$operacao" in
         ;;
 esac
 
+ls ./imagens-livros/algoritmos.jpg | awk -F. '{ print $1 }'     # awk faz manipulacao de textos, F significa FIELD(campo que ira receber a alteracao)
+                                                                # . indica o local de separacao do texto { print $1 } trara o primeiro campo
+
 # Verifica se algum servico esta executando
 if pgrep nginx &> /dev/null; then
         echo "Nginx esta operando $(date +"%Y-%m-%d%H:%M:%S")"
