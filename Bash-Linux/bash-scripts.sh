@@ -10,7 +10,7 @@ curl --write-out %{http_code} --silent --output /dev/null https://adopet-fronten
 --output !tras os dados da requisicao e tempo de espera
 
 exemplo de funcao em bash
-[
+
 function verifica_conflito(){
         local arquivo="$1" #cria uma variavel local
         if grep -q -E '<<<<<<< | ======= | >>>>>>>' "$arquivo"; then #-q nao mostra a linha de erro / -E tras o nome do arquivo
@@ -89,6 +89,34 @@ else
         echo "Nginx fora de operacao $(date +"%Y-%m-%d%H:%M:%S")"
 fi
 
+#########################################
+
+if [ ! -d log ]
+then
+        mkdir log
+fi #Verifica se existe uma pasta LOG, caso nao tenha ira criar
+
+processo_memoria(){
+processos=$(ps -e -o pid --sort -size | head -n 11 | grep [0-9])
+
+for pid in $processos
+do
+        nome_processo=$(ps -p $pid -o comm=) # "ps -p" seria o num de identificacao do pid -o comm= seria o output do "comm=" nome do processo
+        echo -n $(date +%F,%H:%M:%S,) >> log/$nome_processo.log # Insere no arquido $nome_processo a informacao da data de execucao. > Apaga tudo e insere >> Adiciona
+        # -n faz com que nao pule uma linha
+        tamanho_processo=$(ps -p $pid -o size | grep [0-9]) #Recebe o tamanho de cada processo. -output size
+        echo "$(bc <<< "scale=2;$tamanho_processo/1024") MB" >> log/$nome_processo.log #redireciona o valor com 2 casas decimais para o arquivo 
+done
+}
+# Verifica se a funcao processo_memoria possui status de saida com o if [ $? -eq 0 ]. $? = Status saida
+processo_memoria
+if [ $? -eq 0 ]
+then
+        echo "Os arquivos foram salvos!"
+else
+        echo "Houve um erro na hora de salvar!"
+fi
+
 # http://gnu.org/software/grep/manual/grep.html -- Documentacao oficial GREP
 # https://www.gnu.org/software/sed/manual/sed.html -- Documentacao oficial SED
 # https://www.gnu.org/software/gawk/manual/gawk.html -- Documentacao oficial AWK
@@ -122,12 +150,10 @@ Operadores
 ||: ou lógico
 !: negação lógica
 
-
 A - Editar arquivo com o VI
 :w - Salvar
 :q - Sair
 :x - Salvar/Fechar
-
 
 npm run build
 
