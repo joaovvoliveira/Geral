@@ -86,6 +86,8 @@ else
         echo "Nginx fora de operacao $(date +"%Y-%m-%d%H:%M:%S")"
 fi
 
+monitora_total=$(free | grep -i mem | awk '{ print $2 }')
+
 # http://gnu.org/software/grep/manual/grep.html -- Documentacao oficial GREP
 # https://www.gnu.org/software/sed/manual/sed.html -- Documentacao oficial SED
 # https://www.gnu.org/software/gawk/manual/gawk.html -- Documentacao oficial AWK
